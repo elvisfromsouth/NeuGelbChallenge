@@ -5,6 +5,7 @@ import androidx.paging.PagingState
 import com.pborzikov.challenge.data.mappers.toModel
 import com.pborzikov.challenge.domian.models.MovieModel
 import kotlinx.coroutines.CancellationException
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -27,7 +28,7 @@ class TmdbMoviesPagingSource @Inject constructor(
         } catch (exception: CancellationException) {
             throw exception
         } catch (exception: Exception) {
-            exception.printStackTrace()
+            Timber.e(exception)
             LoadResult.Error(exception)
         }
     }

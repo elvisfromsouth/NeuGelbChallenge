@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
+import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
 import coil.ImageLoader
 import com.pborzikov.challenge.R
@@ -31,6 +31,7 @@ import com.pborzikov.challenge.designsystem.components.PageLoadingError
 import com.pborzikov.challenge.domian.models.MovieModel
 import com.pborzikov.challenge.screens.movieslist.MoviesListEvent
 import com.pborzikov.challenge.screens.movieslist.MoviesListUiState
+import kotlinx.coroutines.flow.Flow
 
 
 @Composable
@@ -75,8 +76,7 @@ fun MoviesListScreen(
         )
 
         PagingItems(
-//            moviesPaging = uiState.moviesPaging,
-            moviePagingItems = uiState.moviesPaging.collectAsLazyPagingItems(),
+            moviesPaging = uiState.moviesPaging,
             onItemSelected = remember {
                 { selectedMovie ->
                     handleEvent(MoviesListEvent.OnMovieClicked(selectedMovie.id))
@@ -89,11 +89,10 @@ fun MoviesListScreen(
 
 @Composable
 private fun PagingItems(
-//    moviesPaging: Flow<PagingData<MovieModel>>,
-    moviePagingItems: LazyPagingItems<MovieModel>,
+    moviesPaging: Flow<PagingData<MovieModel>>,
     onItemSelected: (MovieModel) -> Unit,
 ) {
-//    val moviePagingItems = moviesPaging.collectAsLazyPagingItems()
+    val moviePagingItems = moviesPaging.collectAsLazyPagingItems()
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
